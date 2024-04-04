@@ -45,15 +45,16 @@ body {
   border: solid 2px #222222;
 }
 
-col {
+.col {
   max-width: 100%;
+  flex: auto;
 }
-col__left {
+.col__left {
   width: 25%;
 }
-col__mid {
+.col__mid {
   width: 50%;
 }
-col__right {
+.col__right {
   width: 25%;
 }/*# sourceMappingURL=index.css.map */
