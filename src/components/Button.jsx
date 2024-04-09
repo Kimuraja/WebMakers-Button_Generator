@@ -35,7 +35,7 @@ export default function BtnGenerator() {
     const result = handleClick(userTextInput, userNumber, array);
     if (result) {
       const { multipliedArray } = result;
-      setArray((prev) => [...prev, ...multipliedArray]);
+      setArray([...multipliedArray]);
       setUserTextInput('');
       setUserNumber(0);
     } else {
