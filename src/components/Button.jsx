@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { useButton } from "./useButton";
-import Position from "./RandPosition";
+import { useButton } from './useButton'
 
 const generateButtonStyle = (props) => `
   color: #${props.font};
@@ -18,24 +17,30 @@ const Button = styled.button`
 `;
 
 export default function BtnGenerator() {
-  const { input, array, number, numberChange, textChange, handleClick } = useButton();
-  const [buttonsStyles, setButtonsStyles] = useState([]);
+  const [userTextInput, setUserTextInput] = useState('');
+  const [array, setArray] = useState([]);
+  const [userNumber, setUserNumber] = useState(0);
 
-  useEffect(() => {
-    generateRandomStyles();
-  }, [array]);
+  const { buttonsStyles, handleClick } = useButton();
 
-  const generateRandomStyles = () => {
-    const newButtonsStyles = array.map(() => ({
-      font: Math.random().toString(16).substring(9),
-      bg: Math.random().toString(16).substring(9),
-      border: Math.random().toString(16).substring(9),
-      width: Math.floor(Math.random() * 61) + 20,
-      height: Math.floor(Math.random() * 61) + 20,
-      radius: Math.floor(Math.random() * 61) + 20,
-      borderwidth: Math.floor(Math.random() * 20) + 1,
-    }));
-    setButtonsStyles(newButtonsStyles);
+  const numberChange = (event) => {
+    setUserNumber(event.target.value);
+  };
+  
+  const textChange = (event) => {
+    setUserTextInput(event.target.value);
+  };
+
+  const handleButtonClick = () => {
+    const result = handleClick(userTextInput, userNumber, array);
+    if (result) {
+      const { multipliedArray } = result;
+      setArray((prev) => [...prev, ...multipliedArray]);
+      setUserTextInput('');
+      setUserNumber(0);
+    } else {
+      setArray([])
+    }
   };
 
   return (
@@ -43,56 +48,51 @@ export default function BtnGenerator() {
       <div className="row">
         <div className="col col__left">
           <div className="input__section">
-              <input
-                className="input__section--number"
-                type="number"
-                value={number}
-                onChange={numberChange}
-              />
-              <input
-                className="input__section--text"
-                type="text"
-                placeholder="Enter text"
-                value={input}
-                onChange={textChange}
-              />
-              <button className="input__section--button" onClick={handleClick}>
-                Losuj
-              </button>
+            <input
+              className="input__section--number"
+              type="number"
+              value={userNumber}
+              onChange={numberChange}
+            />
+            <input
+              className="input__section--text"
+              type="text"
+              placeholder="Enter text"
+              value={userTextInput}
+              onChange={textChange}
+            />
+            <button className="input__section--button" onClick={handleButtonClick}>
+              Losuj
+            </button>
           </div>
         </div>
-          
-        
-
         <div className="col col__mid">
           {array.map((item, index) => (
-            <Position key={index}>
-              <Button
-                font={buttonsStyles[index]?.font}
-                bg={buttonsStyles[index]?.bg}
-                border={buttonsStyles[index]?.border}
-                width={buttonsStyles[index]?.width}
-                height={buttonsStyles[index]?.height}
-                radius={buttonsStyles[index]?.radius}
-                borderwidth={buttonsStyles[index]?.borderwidth}
-              >
-                {item}
-              </Button>
-            </Position>
+            <Button key={index}
+              font={buttonsStyles[index]?.font}
+              bg={buttonsStyles[index]?.bg}
+              border={buttonsStyles[index]?.border}
+              width={buttonsStyles[index]?.width}
+              height={buttonsStyles[index]?.height}
+              radius={buttonsStyles[index]?.radius}
+              borderwidth={buttonsStyles[index]?.borderwidth}
+            >
+              {item}
+            </Button>
           ))}
         </div>
         <div className="col col__right">
           <pre>
             {array.map((item, index) => (
               <div key={index}>
-                {`<Button
-                  color="${buttonsStyles[index]?.font}"
-                  background-color="${buttonsStyles[index]?.bg}"
-                  border="solid ${buttonsStyles[index]?.border} ${buttonsStyles[index]?.borderwidth}px"
-                  width="${buttonsStyles[index]?.width}px"
-                  height="${buttonsStyles[index]?.height}px"
-                  border-radius="${buttonsStyles[index]?.radius}px"
-                >`}
+                {`button {
+                  color: "${buttonsStyles[index]?.font};"
+                  background-color: "${buttonsStyles[index]?.bg};"
+                  border: "solid ${buttonsStyles[index]?.border} ${buttonsStyles[index]?.borderwidth}px;"
+                  width: "${buttonsStyles[index]?.width}px;"
+                  height: "${buttonsStyles[index]?.height}px;"
+                  border-radius: "${buttonsStyles[index]?.radius}px;"
+                }`}
               </div>
             ))}
           </pre>

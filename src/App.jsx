@@ -3,9 +3,7 @@ import BtnGenerator from "./components/Button";
 function App() {
 
   return (
-    <>
-      <BtnGenerator />
-    </>
+    <BtnGenerator />
   );
 }
 
