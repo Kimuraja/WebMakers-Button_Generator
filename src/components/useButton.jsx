@@ -31,5 +31,5 @@ export const useButton = () => {
   };
   
 
-  return { buttonsStyles, userNumber, userTextInput, generateButtonStyles };
+  return { buttonsStyles, generateButtonStyles };
 };
