@@ -18,28 +18,27 @@ const Button = styled.button`
 
 export default function BtnGenerator() {
   const [userTextInput, setUserTextInput] = useState('');
-  const [array, setArray] = useState([]);
+  const [buttonArray, setButtonArray] = useState([]);
   const [userNumber, setUserNumber] = useState(0);
 
-  const { buttonsStyles, handleClick } = useButton();
+  const { buttonsStyles, generateButtonStyles } = useButton();
 
-  const numberChange = (event) => {
+  const handleNumberChange = (event) => {
     setUserNumber(event.target.value);
   };
   
-  const textChange = (event) => {
+  const handleTextChange = (event) => {
     setUserTextInput(event.target.value);
   };
 
-  const handleButtonClick = () => {
-    const result = handleClick(userTextInput, userNumber, array);
-    if (result) {
-      const { multipliedArray } = result;
-      setArray([...multipliedArray]);
+  const handleGenerateButton = () => {
+    const generatedResult = generateButtonStyles(userTextInput, userNumber);
+    if (generatedResult) {
+      setButtonArray([...generatedResult.numberOfButtons]);
       setUserTextInput('');
       setUserNumber(0);
     } else {
-      setArray([])
+      setButtonArray([]);
     }
   };
 
@@ -52,46 +51,38 @@ export default function BtnGenerator() {
               className="input__section--number"
               type="number"
               value={userNumber}
-              onChange={numberChange}
+              onChange={handleNumberChange}
             />
             <input
               className="input__section--text"
               type="text"
               placeholder="Enter text"
               value={userTextInput}
-              onChange={textChange}
+              onChange={handleTextChange}
             />
-            <button className="input__section--button" onClick={handleButtonClick}>
+            <button className="input__section--button" onClick={handleGenerateButton}>
               Losuj
             </button>
           </div>
         </div>
         <div className="col col__mid">
-          {array.map((item, index) => (
-            <Button key={index}
-              font={buttonsStyles[index]?.font}
-              bg={buttonsStyles[index]?.bg}
-              border={buttonsStyles[index]?.border}
-              width={buttonsStyles[index]?.width}
-              height={buttonsStyles[index]?.height}
-              radius={buttonsStyles[index]?.radius}
-              borderwidth={buttonsStyles[index]?.borderwidth}
-            >
-              {item}
+          {buttonArray.map((button, index) => (
+            <Button key={index} {...buttonsStyles[index]}>
+              {button}
             </Button>
           ))}
         </div>
         <div className="col col__right">
           <pre>
-            {array.map((item, index) => (
+            {buttonArray.map((button, index) => (
               <div key={index}>
                 {`button {
-                  color: "${buttonsStyles[index]?.font};"
-                  background-color: "${buttonsStyles[index]?.bg};"
-                  border: "solid ${buttonsStyles[index]?.border} ${buttonsStyles[index]?.borderwidth}px;"
-                  width: "${buttonsStyles[index]?.width}px;"
-                  height: "${buttonsStyles[index]?.height}px;"
-                  border-radius: "${buttonsStyles[index]?.radius}px;"
+                  color: #${buttonsStyles[index]?.font};
+                  background-color: #${buttonsStyles[index]?.bg};
+                  border: solid #${buttonsStyles[index]?.border} ${buttonsStyles[index]?.borderwidth}px;
+                  width: ${buttonsStyles[index]?.width}px;
+                  height: ${buttonsStyles[index]?.height}px;
+                  border-radius: ${buttonsStyles[index]?.radius}px;
                 }`}
               </div>
             ))}

@@ -6,11 +6,11 @@ export const useButton = () => {
   const [userNumber, setUserNumber] = useState(0);
 
 
-  const handleClick = (userTextInput, userNumber) => {
+  const generateButtonStyles = (userTextInput, userNumber) => {
     if (userTextInput !== '' && userNumber !== 0) {
-      const multipliedArray = Array.from({ length: userNumber }, () => userTextInput);
+      const numberOfButtons = Array.from({ length: userNumber }, () => userTextInput);
       
-      const newButtonsStyles = [...multipliedArray.map(() => ({
+      const newButtonsStyles = [...numberOfButtons.map(() => ({
         font: Math.random().toString(16).substring(9),
         bg: Math.random().toString(16).substring(9),
         border: Math.random().toString(16).substring(9),
@@ -23,7 +23,7 @@ export const useButton = () => {
       setButtonsStyles(newButtonsStyles);
       return {
         buttonsStyles: newButtonsStyles,
-        multipliedArray,
+        numberOfButtons,
       };
     } else {
       alert("Please check your data");
@@ -31,5 +31,5 @@ export const useButton = () => {
   };
   
 
-  return { buttonsStyles, userNumber, userTextInput, handleClick };
+  return { buttonsStyles, userNumber, userTextInput, generateButtonStyles };
 };
