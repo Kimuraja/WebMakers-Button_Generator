@@ -32,7 +32,15 @@ export default function BtnGenerator() {
   };
 
   const onGenerateButtonClick = () => {
-    generateButton( userTextInput, userNumber, setUserTextInput, setArrayOfButtons, setUserNumber )
+    const generatedResult = generateButton( userTextInput, userNumber )
+    if (generatedResult) {
+      setArrayOfButtons(generatedResult);
+      setUserTextInput('');
+      setUserNumber(0);
+    } else {
+      alert("Please check your data");
+      setArrayOfButtons([]);
+    }
   };
 
   return (

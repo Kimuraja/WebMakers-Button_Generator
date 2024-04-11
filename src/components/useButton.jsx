@@ -1,5 +1,5 @@
 export const useButtonsGenerator = () => {
-  const generateButton = (userTextInput, userNumber, setUserTextInput, setArrayOfButtons, setUserNumber) => {
+  const generateButton = (userTextInput, userNumber ) => {
     if (userTextInput !== '' && userNumber !== 0) {
       const buttonLabels = Array.from({ length: userNumber }, () => userTextInput);
       
@@ -17,14 +17,8 @@ export const useButtonsGenerator = () => {
         text: button,
         styles: newButtonsStyles[index]
       }));
-      setArrayOfButtons(styledButtons);
-      setUserTextInput('');
-      setUserNumber(0);
-      
-    } else {
-      alert("Please check your data");
-      setArrayOfButtons([]);
-    }
+      return styledButtons
+    } 
   };
 
   return { generateButton };
