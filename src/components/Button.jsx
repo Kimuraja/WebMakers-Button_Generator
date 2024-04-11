@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useButton } from './useButton'
+import { useButtonsGenerator } from './useButton'
 
 const generateButtonStyle = (props) => `
   color: #${props.font};
@@ -18,10 +18,10 @@ const Button = styled.button`
 
 export default function BtnGenerator() {
   const [userTextInput, setUserTextInput] = useState('');
-  const [buttonArray, setButtonArray] = useState([]);
+  const [arrayOfButtons, setArrayOfButtons] = useState([]);
   const [userNumber, setUserNumber] = useState(0);
 
-  const { buttonsStyles, generateButtonStyles } = useButton();
+  const { generateButton } = useButtonsGenerator();
 
   const handleNumberChange = (event) => {
     setUserNumber(event.target.value);
@@ -31,15 +31,8 @@ export default function BtnGenerator() {
     setUserTextInput(event.target.value);
   };
 
-  const handleGenerateButton = () => {
-    const generatedResult = generateButtonStyles(userTextInput, userNumber);
-    if (generatedResult) {
-      setButtonArray([...generatedResult.numberOfButtons]);
-      setUserTextInput('');
-      setUserNumber(0);
-    } else {
-      setButtonArray([]);
-    }
+  const onGenerateButtonClick = () => {
+    generateButton( userTextInput, userNumber, setUserTextInput, setArrayOfButtons, setUserNumber )
   };
 
   return (
@@ -60,29 +53,29 @@ export default function BtnGenerator() {
               value={userTextInput}
               onChange={handleTextChange}
             />
-            <button className="input__section--button" onClick={handleGenerateButton}>
+            <button className="input__section--button" onClick={onGenerateButtonClick}>
               Losuj
             </button>
           </div>
         </div>
         <div className="col col__mid">
-          {buttonArray.map((button, index) => (
-            <Button key={index} {...buttonsStyles[index]}>
-              {button}
+          {arrayOfButtons.map((button, index) => (
+            <Button key={index} {...button.styles}>
+              {button.text}
             </Button>
           ))}
         </div>
         <div className="col col__right">
           <pre>
-            {buttonArray.map((button, index) => (
+            {arrayOfButtons.map((button, index) => (
               <div key={index}>
                 {`button {
-                  color: #${buttonsStyles[index]?.font};
-                  background-color: #${buttonsStyles[index]?.bg};
-                  border: solid #${buttonsStyles[index]?.border} ${buttonsStyles[index]?.borderwidth}px;
-                  width: ${buttonsStyles[index]?.width}px;
-                  height: ${buttonsStyles[index]?.height}px;
-                  border-radius: ${buttonsStyles[index]?.radius}px;
+                  color: #${button.styles.font};
+                  background-color: #${button.styles.bg};
+                  border: solid #${button.styles.border} ${button.styles.borderwidth}px;
+                  width: ${button.styles.width}px;
+                  height: ${button.styles.height}px;
+                  border-radius: ${button.styles.radius}px;
                 }`}
               </div>
             ))}
